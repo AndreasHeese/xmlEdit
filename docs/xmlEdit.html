@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- Copyright 2021 - xmlEdit.xsl - Andreas Heese - Version 1.0 - MIT-License -->
+<html>
+	<head>
+		<title>Saxon-JS 2.1 xmlEdit</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+		<style>
+			html { font-size: 16pt; }
+			div#content { margin: 0 0 8pt -12pt; }
+			div#content p { margin: 2pt 0 2pt 12pt; border: 2pt solid Silver; padding: 4pt; background-color: WhiteSmoke; }
+			input { width: 30em; background-color: WhiteSmoke; }
+			span.name { margin-right: 1em; color: Maroon; }
+			span.attr { margin-left: 0.5em; color: Navy; }
+			span[contenteditable=true] { background-color: Silver; padding-left: 5pt; padding-right: 5pt; }
+			span[contenteditable=true].edited { background-color: Orange; }
+		</style>
+		<script type="text/javascript" src="SaxonJS2.rt.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var filename; // used in functions handleFile and handleUpdate
+			var downloadUrl = null; // used in returnBlob
+			function handleFile(input) {
+				filename = input.files[0].name;
+				var transform = SaxonJS.transform({
+					stylesheetLocation: "xmlEdit.sef.json",
+					sourceLocation: window.URL.createObjectURL(input.files[0]),
+					stylesheetParams: {"parameter": ["load",filename]}
+				}, "async");
+				transform.then(function(value) {}, function(reason) {
+					document.getElementById('content').innerHTML = '<p>Transformation failed</p>'; // Error
+				});
+			}
+			function handleUpdate(content) {
+				document.getElementById("inpFile").value = "";
+				SaxonJS.transform({
+					stylesheetLocation: "xmlEdit.sef.json",
+					sourceType: 'xml',
+					sourceText: String(content),
+					stylesheetParams: {"parameter": ["update",filename]},
+				}, "async");
+			}
+			function handleInput(e) {
+				e.classList.add('edited');
+				document.getElementById("btnUpdate").style.display = "inline";
+			}
+			function returnBlob(content) {
+				var downloadUrl = null;
+				var blob = new Blob(
+					[String(content).replace(/&amp;(?=[a-z]+;)/g,'&')], {type : "text/xml;charset=utf-8"}
+				); // fix double escaping of "&" character with regex replace
+				downloadUrl = URL.createObjectURL( blob );
+				return downloadUrl;
+			}
+			function getClassEdited(id) {
+				var r = '';
+				try {
+					if (document.getElementById(id).classList.contains('edited')) {
+						r = 'e';
+					}
+				} finally {
+					return r;
+				}
+			}
+			function getContent(id) {
+				try {
+					return document.getElementById(id).textContent;
+				} catch (e) {
+					return '';
+				}
+			}
+		</script>
+		<h1>Saxon-JS 2.1 xmlEdit</h1>
+		<div>
+			<input type="file" id="inpFile" class="test" accept=".xml" onchange="handleFile(this)"/>
+			<button type="button" id="btnUpdate" style="display: none;">Update Changes</button>
+			<span id="save"></span>
+		</div>
+		<div id="content">
+			<p>No file selected yet. Select a xml file on your computer. Edit text values and download.</p>
+		</div>
+	</body>
+</html>
