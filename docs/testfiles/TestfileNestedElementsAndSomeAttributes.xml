@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root level="1">
+	<element level="2" attribute="another attribute">Start</element>
+	Text of root element between first and second element
+	<element level="2">Text for second element
+		<element level="3" attr2="" attr3="attribute 2 is empty">First child of second element</element>
+		The next child element is empty
+		<element />
+	</element>
+	<element>Last element without attributes</element>
+</root>
