@@ -36,14 +36,18 @@
 				handleTransform(returnBlob(content),"update");
 			}
 			function handleTransform(url,parameter) {
-				var transform = SaxonJS.transform({
-					stylesheetLocation: "xmlEdit-v11.sef.json",
-					sourceLocation: url,
-					stylesheetParams: {"parameter": [parameter,filename]},
-				}, "async");
-				transform.then(function(value) {}, function(reason) {
-					document.getElementById('content').innerHTML = '<p>Transformation failed - '+ reason +'</p>'; // Error
-				});
+				try {
+					var transform = SaxonJS.transform({
+						stylesheetLocation: "xmlEdit-v11.sef.json",
+						sourceLocation: url,
+						stylesheetParams: {"parameter": [parameter,filename]},
+					}, "async");
+					transform.then(function(value) {}, function(reason) {
+						document.getElementById('content').innerHTML = '<p>Transformation failed - '+ reason +'</p>'; // Saxon-JS Error
+					});
+				} catch (e) {
+					document.getElementById('content').innerHTML = '<p>Browser does not support Saxon-JS transformations</p>'; // Error
+				}
 			}
 			function handleInput(e) {
 				e.classList.add('edited');
