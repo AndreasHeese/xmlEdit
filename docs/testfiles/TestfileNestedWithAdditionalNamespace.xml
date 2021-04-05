@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root level="1">
+	<element level="2" attribute="another attribute">Start</element>
+	Text of root element between first and second element
+	<element level="2">Text for second element
+		<element level="3" attr2="" attr3="attribute 2 is empty">First child of second element</element>
+		The next child element is empty
+		<element />
+	</element>
+	<svg:g xmlns:svg="http://www.w3.org/2000/svg">
+		<svg:ellipse cx="1400" cy="30" rx="38" ry="20" fill="Red"/>
+		<svg:text x="1400" y="30" style="font-family:Arial,sans-serif; font-weight:bolder; font-size:24pt; fill:LightGray;" text-anchor="middle" dominant-baseline="central">SVG</svg:text>
+	</svg:g>
+	<element>Last element without namespace</element>
+</root>
