@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Copyright 2021 - xmlEdit.xsl - Andreas Heese - Version 1.1.1 - MIT-License -->
+<!-- Copyright 2021 - xmlEdit.xsl - Andreas Heese - Version 1.1.2 - MIT-License -->
 <html>
 	<head>
 		<title>Saxon-JS 2.1 xmlEdit v1.1</title>
@@ -64,9 +64,7 @@
 			function getClassEdited(id) {
 				var r = '';
 				try {
-					if (document.getElementById(id).classList.contains('edited')) {
-						r = 'e';
-					}
+					r = document.getElementById(id).classList.contains('edited') ? 'e' : '';
 				} finally {
 					return r;
 				}
