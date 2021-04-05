@@ -64,9 +64,7 @@
 			function getClassEdited(id) {
 				var r = '';
 				try {
-					if (document.getElementById(id).classList.contains('edited')) {
-						r = 'e';
-					}
+					r = document.getElementById(id).classList.contains('edited') ? 'e' : '';
 				} finally {
 					return r;
 				}
